@@ -14,30 +14,21 @@ public:
         ListNode* cur1 = l1;
         ListNode* cur2 = l2;
         ListNode* head = new ListNode();
-        ListNode* ansCur = head;
+        ListNode* tail = head;
         int carry = 0;
 
-        while (true) {
-            int sum = carry;
-
-            if (cur1) {
-                sum += cur1->val;
-                cur1 = cur1->next;
-            }
-            
-            if (cur2) {
-                sum += cur2->val;
-                cur2 = cur2->next;
-            }
-
-            if (!(sum || cur1 || cur2) && head->next) break;
+        while (cur1 || cur2 || carry) {
+            int digit1 = cur1 ? cur1->val : 0;
+            int digit2 = cur2 ? cur2->val : 0;
+            int sum = digit1 + digit2 + carry;
 
             carry = sum / 10;
             sum %= 10;
-
             ListNode* newNode = new ListNode(sum);
-            ansCur->next = newNode;
-            ansCur = newNode;
+            tail->next = newNode;
+            tail = tail->next;
+            cur1 = cur1 ? cur1->next : nullptr;
+            cur2 = cur2 ? cur2->next : nullptr;
         } 
 
         return head->next;
