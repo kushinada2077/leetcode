@@ -1,17 +1,14 @@
 class Solution {
 public:
     int getCommon(vector<int>& nums1, vector<int>& nums2) {
-        unordered_map<int, bool> map;
+        int i = 0, j = 0;
 
-        for (auto i : nums1) {
-            map[i] = true;
-        } 
-
-        for (auto i : nums2) {
-            if (map.find(i) != map.end()) {
-                return i;
+        while (i < nums1.size() && j < nums2.size()) {
+            if (nums1[i] == nums2[j]) return nums1[i];
+            else {
+                nums1[i] > nums2[j] ? j++ : i++;
             }
-        }
+        } 
 
         return -1;
     }
