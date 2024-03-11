@@ -1,22 +1,15 @@
 class Solution {
 public:
     bool isPalindrome(int x) {
-        vector<char> nums;
-        int copy = x;
+        if (x < 0) return false;
+        int cpy = x, rev = 0;
 
-        if (copy < 0) return false;
-        
-        while (copy > 0) {
-            nums.push_back(copy % 10);
-            copy /= 10;
-        } 
-
-        int left = 0, right = nums.size() - 1;
-
-        while (left < right) {
-            if (nums[left++] != nums[right--]) return false;
+        while (cpy > 0) {
+            int digit = cpy % 10;
+            cpy /= 10;
+            rev = rev * 10 + digit;
         }
 
-        return true;
+        return x == rev;
     }
 };
