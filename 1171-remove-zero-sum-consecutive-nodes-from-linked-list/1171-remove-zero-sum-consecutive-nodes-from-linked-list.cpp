@@ -11,17 +11,15 @@
 class Solution {
 public:
     ListNode* removeZeroSumSublists(ListNode* head) {
-        ListNode* from = head;
-        ListNode* to = head;
         ListNode* dummyHead = new ListNode(0, head);
-        ListNode* preFrom = dummyHead;
+        ListNode* from = dummyHead;
+        ListNode* to = head;
         int sum = 0;
 
-        while (from) {
+        while (from->next) {
             if (!to) {
-                preFrom = from;
                 from = from->next;
-                to = from;
+                to = from->next;
                 sum = 0;
                 continue;
             }
@@ -29,16 +27,9 @@ public:
             sum += to->val;
 
             if (!sum) {
-                if (to->next) {
-                    from->val = to->next->val;
-                    from->next = to->next->next; 
-                    to = from;
-                    continue;
-                }      
-                else {
-                    preFrom->next = nullptr;
-                    break;
-                }
+                from->next = to->next;
+                to = from->next;
+                continue;
             }
 
             to = to->next;
