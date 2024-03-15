@@ -13,8 +13,8 @@ public:
     ListNode* removeZeroSumSublists(ListNode* head) {
         ListNode* from = head;
         ListNode* to = head;
-        ListNode* preFrom;
-        ListNode* myHead = head;
+        ListNode* dummyHead = new ListNode(0, head);
+        ListNode* preFrom = dummyHead;
         int sum = 0;
 
         while (from) {
@@ -29,10 +29,6 @@ public:
             sum += to->val;
 
             if (!sum) {
-                if (myHead == from) {
-                    from = to = myHead = to->next;
-                    continue;
-                }
                 if (to->next) {
                     from->val = to->next->val;
                     from->next = to->next->next; 
@@ -48,6 +44,6 @@ public:
             to = to->next;
         }
 
-        return myHead;
+        return dummyHead->next;
     }
 };
