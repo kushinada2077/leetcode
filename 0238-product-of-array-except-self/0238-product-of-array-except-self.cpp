@@ -1,38 +1,20 @@
 class Solution {
 public:
-    int sign(int a, int b) {
-        if ((a >= 0 && b >= 0) || (a <= 0 && b <= 0)) return 1;
-        return -1;
-    }
     vector<int> productExceptSelf(vector<int>& nums) {
-        unordered_map<int, int> map;
-        vector<int> ans;
-        int product = 1;
-        int product_without_zero = 1;
-        int zero_count = 0;
+        int n = nums.size();
+         vector<int> prefix(n, 1);
+         vector<int> suffix(n, 1);
+         vector<int> ans;
 
-        for (auto i : nums) {
-            if (!i) zero_count++; 
-            else product_without_zero *= i;
-            product *= i;
-        }      
+         for (int i = 1; i < n; i++) {
+            prefix[i] = prefix[i - 1] * nums[i - 1];
+            suffix[n - i - 1] = suffix[n - i] * nums[n - i];
+         }
 
-        if (zero_count > 1) map[0] = 0;
-        else map[0] = product_without_zero;
-
-        int pos_product = abs(product);
-        for (int i = 1, j = pos_product; i * i <= pos_product; i++, j--) {
-            if (pos_product % i) continue;
-            while (i * j != pos_product && j >= i) j--;
-            map[i] = j;
-            map[j] = i;
+        for (int i = 0; i < n; i++) {
+            ans.push_back(prefix[i] * suffix[i]);
         }
 
-
-        for (auto i : nums) {
-            ans.push_back(sign(i, product) * map[abs(i)]);
-        }
-        
         return ans;
     }
 };
