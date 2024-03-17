@@ -1,32 +1,33 @@
 class Solution {
 public:
-    struct SE {
-        int s, e;
-    };
-    bool isOverlapped(SE se1, SE se2) {
-        return !(se1.s > se2.e || se2.s > se1.e);
-    }
     vector<vector<int>> insert(vector<vector<int>>& intervals,
-                               vector<int> newInterval){
+                               vector<int> newInterval) {
 
-        vector<vector<int>> ans;
+        int i = 0;
+        int len = intervals.size();
         int ns = newInterval[0], ne = newInterval[1];
-        int mn = ns, mx = ne;
-        bool sw = true;
-        for (auto se: intervals) {
-            int s, e;
-            s = se[0];
-            e = se[1];
+        vector<vector<int>> ans;
 
-            if (isOverlapped({s, e}, {ns, ne})) {
-                mn = min(s, mn);
-                mx = max(e, mx); 
-            }
-            else ans.push_back(se);
+        while (i < len && intervals[i][1] < ns) {
+            ans.push_back(intervals[i++]);
         }
 
-        ans.push_back({mn, mx});
-        sort(ans.begin(), ans.end());
+        if (i < len)
+            ns = min(ns, intervals[i][0]);
+
+        while (i < len && intervals[i][0] <= ne) {
+            i++;
+        }
+
+        if (i && i < len)
+            ne = max(ne, intervals[i - 1][1]);
+
+        ans.push_back({ns, ne});
+
+        while (i < len) {
+            ans.push_back(intervals[i++]);
+        }
+
         return ans;
     };
 };
