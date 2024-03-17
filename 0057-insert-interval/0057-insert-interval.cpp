@@ -19,7 +19,7 @@ public:
             i++;
         }
 
-        if (i && i < len)
+        if (i)
             ne = max(ne, intervals[i - 1][1]);
 
         ans.push_back({ns, ne});
