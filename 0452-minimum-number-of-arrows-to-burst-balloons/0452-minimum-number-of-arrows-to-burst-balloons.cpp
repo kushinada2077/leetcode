@@ -1,10 +1,13 @@
 class Solution {
 public:
+    static bool comp(vector<int> a1, vector<int> a2) {
+        return a1[0] < a2[0];
+    }
     bool isOverlapped(vector<int> a1, vector<int> a2) {
         return !(a1[1] < a2[0] || a1[1] < a2[0]);
     }
     int findMinArrowShots(vector<vector<int>>& points) {
-        sort(points.begin(), points.end());
+        sort(points.begin(), points.end(), comp);
         vector<int> pre = points[0];
         int ans = 1, len = points.size();
         
