@@ -21,10 +21,13 @@ public:
 
         cur = head;
         int i = 0;
+        int len = arr.size();
         
         while (cur) {
-            cur->val = arr[i];
+            cur->val = arr[len - 1 - i++];
             cur = cur->next;
         }
+
+        return head;
     }
 };
