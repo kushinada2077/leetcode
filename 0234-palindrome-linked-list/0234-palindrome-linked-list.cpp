@@ -12,22 +12,19 @@
 class Solution {
 public:
     bool isPalindrome(ListNode* head) {
-        ll num = 0;
+        vector<int> nums;
         ListNode* cur = head;
 
         while (cur) {
-            num *= 10;
-            num += cur->val;
+            nums.push_back(cur->val);
             cur = cur->next;
         }
 
-        ll comp = num, tmp = 0;
-        while (num) {
-            tmp *= 10;
-            tmp += num % 10;
-            num /= 10; 
+        int n = nums.size();
+        for (int i = 0; i < n / 2; i++) {
+            if (nums[i] != nums[n - 1 - i]) return false;
         }
 
-        return comp == tmp;
+        return true;
     }
 };
