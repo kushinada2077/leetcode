@@ -12,17 +12,31 @@
 class Solution {
 public:
     bool isPalindrome(ListNode* head) {
-        vector<int> nums;
-        ListNode* cur = head;
+        ListNode* slow = head;
+        ListNode* fast = head;
 
-        while (cur) {
-            nums.push_back(cur->val);
-            cur = cur->next;
+        while (fast && fast->next) {
+            slow = slow->next;
+            fast = fast->next->next;
         }
 
-        int n = nums.size();
-        for (int i = 0; i < n / 2; i++) {
-            if (nums[i] != nums[n - 1 - i]) return false;
+        ListNode* prev = nullptr;
+
+        while (slow) {
+            ListNode* next = slow->next;
+            slow->next = prev;
+            prev = slow;
+            slow = next;
+        }
+
+        fast = head;
+        slow = prev;
+
+        while (fast && slow) {
+            if (fast->val != slow->val) return false;
+            cout << fast->val << " : " << slow->val << "\n";
+            slow = slow->next;
+            fast = fast->next;
         }
 
         return true;
