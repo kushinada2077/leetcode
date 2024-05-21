@@ -1,14 +1,20 @@
 class Solution {
 public:
     int findDuplicate(vector<int>& nums) {
-        int d[100001];
-        fill(d, d + 100001, 0);
+        int lo = 0, hi = nums.size() - 1;
 
-        for (auto n : nums) {
-            if (d[n]) return n;
-            d[n]++;
-        }
+        do {
+            int mid = (lo + hi) / 2;
 
-        return 0;
+            int cnt = 0;
+            for (auto n : nums) {
+                if (n <= mid) cnt++;
+            }
+
+            if (cnt > mid) hi = mid;
+            else lo = mid;
+        } while (lo + 1 < hi);
+
+        return hi;
     }
 };
