@@ -3,7 +3,7 @@ public:
     int n; 
     vector<string> sen;
     vector<string> ans;
-    set<string> dic;
+    unordered_set<string> dic;
     void sol(const string& s, int k) {
         if (n == k) {
             string tmp = "";
