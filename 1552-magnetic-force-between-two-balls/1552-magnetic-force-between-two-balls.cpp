@@ -1,28 +1,25 @@
 class Solution {
 public:
-    bool isAvail(set<int>& nums, int inte, int m, int st) {
-        int cnt = 0, cur = st;
-        while (cnt < m) {
-            auto lo = nums.lower_bound(cur);
-            if (lo == nums.end())
-                return false;
-            cur = *lo + inte;
-            cnt++;
+    bool isPossible(vector<int>& pos, int dist, int m) {
+        int last = pos[0];
+        int cnt = 1;
+        for (int i = 1; i < pos.size(); ++i) {
+            if (pos[i] - last >= dist) {
+                last = pos[i];
+                cnt++;
+            } 
         }
-        return true;
+        return cnt >= m;
     }
     int maxDistance(vector<int>& position, int m) {
+        int n = position.size();
         sort(position.begin(), position.end());
-        set<int> nums(position.begin(), position.end());
-        int lo = 1, hi = 1e9;
+        int lo = 1, hi = (position[n - 1] - position[0]) / (m - 1) + 1;
         while (lo + 1 < hi) {
-            int inte = (lo + hi) / 2;
-            cout << hi << " " << lo << " " << inte << "\n";
-            if (isAvail(nums, inte, m, position[0]))
-                lo = inte;
-            else
-                hi = inte;
-        }
+            int dist = (lo + hi) / 2;
+            if (isPossible(position, dist, m)) lo = dist;
+            else hi = dist;
+        } 
         return lo;
     }
 };
