@@ -1,22 +1,20 @@
 class Solution {
 public:
     int longestSubarray(vector<int>& nums, int limit) {
-        multiset<int> m;
-        m.insert(nums[0]);
-        int st = 0, en = 1, ans = 1;
-
-        while (true) {
-            int mx = *prev(m.end());
-            int mn = *m.begin();
-            while (limit < abs(mx - mn)) {
-                m.erase(m.find(nums[st++]));
-                mx = *prev(m.end());
-                mn = *m.begin();
+        deque<int> in;
+        deque<int> de;
+        int l = 0, ans = 1;
+        for (int r = 0; r < nums.size(); ++r) {
+            while (!in.empty() && nums[r] < in.back()) in.pop_back();
+            in.push_back(nums[r]);
+            while (!de.empty() && nums[r] > de.back()) de.pop_back();
+            de.push_back(nums[r]);
+            while (limit < de.front() - in.front()) {
+                if (in.front() == nums[l]) in.pop_front();
+                if (de.front() == nums[l]) de.pop_front();
+                l++;
             }
-            ans = max(ans, en - st);
-            if (en >= nums.size()) break;
-            if (limit >= abs(mx - mn))
-                m.insert(nums[en++]);
+            ans = max(ans, r - l + 1);
         }
         return ans;
     }
