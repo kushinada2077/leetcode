@@ -3,28 +3,15 @@ class Solution {
 public:
     long long countSubarrays(vector<int>& nums, int minK, int maxK) {
         ll ans = 0;
-        deque<int> de, in;
-        int l = 0, minI = -1, maxI = -1;
-        for (int r = 0; r < nums.size(); ++r) {
-            int v = nums[r];
-            while (!de.empty() && nums[de.back()] < v)
-                de.pop_back();
-            de.push_back(r);
-            if (v == maxK) maxI = r;
-            while (!in.empty() && nums[in.back()] > v)
-                in.pop_back();
-            in.push_back(r);
-            if (v == minK) minI = r;
-            while (l < r && (nums[de.front()] > maxK || nums[in.front()] < minK)) {
-                if (nums[de.front()] == nums[l])
-                    de.pop_front();
-                if (nums[in.front()] == nums[l])
-                    in.pop_front();
-                l++;
-            }
-            if (nums[de.front()] == maxK && nums[in.front()] == minK) {
-                ans += min(minI, maxI) - l + 1;
-            }
+        int n = nums.size();
+        int st = -1, mn = -1, mx = -1;
+        for (int i = 0; i < n; ++i) {
+            int v = nums[i];
+            if (v > maxK || v < minK) st = i;
+            if (v == maxK) mx = i;
+            if (v == minK) mn = i;
+            int tmp = min(mx, mn) - st;
+            ans += tmp > 0 ? tmp : 0;
         }
         return ans;
     }
