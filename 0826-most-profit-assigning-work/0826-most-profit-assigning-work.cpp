@@ -7,15 +7,15 @@ public:
         sort(pro_idx.begin(), pro_idx.end(), [profit](int a, int b) {
             return profit[a] > profit[b];
         });
+        priority_queue<int> pq(worker.begin(), worker.end());
         for (auto i : pro_idx) {
             int d = difficulty[i];
-            for (int j = 0; j < m; ++j) {
-                int w = worker[j];
-                if (w >= d) {
-                    worker[j] = 0;
-                    ans += profit[i];
-                }
+            int p = profit[i];
+            while (!pq.empty() && pq.top() >= d) {
+                ans += p;
+                pq.pop();
             }
+            if (pq.empty()) break;
         }
         return ans;
     }
