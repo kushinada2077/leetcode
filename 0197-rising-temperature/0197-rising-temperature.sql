@@ -1,6 +1,6 @@
-SELECT id FROM Weather AS T
-WHERE temperature > 
-    (SELECT temperature 
-        FROM Weather AS Y
-        WHERE DATEDIFF(T.recordDate, Y.recordDate) = 1
-    )
+SELECT w1.id id
+FROM Weather w1
+CROSS JOIN Weather w2
+WHERE
+    w2.temperature < w1.temperature
+    AND DATEDIFF(w1.recordDate, w2.recordDate) = 1;
