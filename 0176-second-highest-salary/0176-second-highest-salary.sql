@@ -1,10 +1,8 @@
-SELECT
-(
-SELECT DISTINCT e1.salary
-FROM Employee e1
-WHERE 1 = (
-    SELECT COUNT(DISTINCT e2.salary)
-    FROM Employee e2
-    WHERE e1.salary < e2.salary
-)
+SELECT (
+SELECT DISTINCT salary
+FROM (
+SELECT DISTINCT salary, DENSE_RANK() OVER (ORDER BY salary DESC) rnk
+FROM Employee
+) e
+WHERE rnk = 2
 ) SecondHighestSalary;
