@@ -1,4 +1,8 @@
-SELECT activity_date day, COUNT(DISTINCT user_id) active_users
+SELECT 
+    activity_date day,
+    COUNT(DISTINCT user_id) active_users
 FROM Activity
-WHERE activity_date BETWEEN DATE_SUB('2019-07-27', INTERVAL 29 DAY) AND '2019-07-27'
+WHERE 
+    DATE_SUB('2019-07-27', INTERVAL 30 DAY) < activity_date
+    AND activity_date <= '2019-07-27'
 GROUP BY activity_date;
