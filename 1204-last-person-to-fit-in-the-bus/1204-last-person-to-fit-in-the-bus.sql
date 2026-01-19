@@ -1,10 +1,8 @@
-SELECT main.person_name
-FROM (
-SELECT q1.person_name, SUM(q2.weight) weight_sum
+SELECT q1.person_name
 FROM Queue q1
 JOIN Queue q2
-ON q2.turn <= q1.turn
-GROUP BY q1.person_id, q1.turn HAVING SUM(q2.weight) <= 1000
-) main
-ORDER BY main.weight_sum DESC
+ON q1.turn >= q2.turn
+GROUP BY q1.turn
+HAVING SUM(q2.weight) <= 1000
+ORDER BY SUM(q2.weight) DESC
 LIMIT 1;
