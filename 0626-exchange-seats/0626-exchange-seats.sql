@@ -1,9 +1,8 @@
-SELECT 
+SELECT
+    id, 
     CASE
-        WHEN id % 2 = 1 AND id < (SELECT MAX(id) FROM SEAT) THEN id + 1
-        WHEN id % 2 = 0 THEN id - 1
-        ELSE id
-    END id
-    , student
-FROM Seat
-ORDER BY id;
+    WHEN s1.id % 2 = 0 THEN (SELECT student FROM Seat WHERE s1.id - 1 = id)
+    WHEN s1.id % 2 = 1 AND s1.id = (SELECT COUNT(*) FROM Seat) THEN s1.student
+    ELSE (SELECT student FROM Seat WHERE s1.id + 1 = id) 
+    END student
+FROM Seat s1
