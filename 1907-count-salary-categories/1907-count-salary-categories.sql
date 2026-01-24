@@ -1,19 +1,15 @@
-SELECT cg.category, COUNT(s.category) accounts_count
+SELECT c.category, COUNT(account_id) accounts_count
 FROM (
-    SELECT "High Salary" category
-    UNION ALL
-    SELECT "Low Salary"
-    UNION ALL
-    SELECT "Average Salary"
-) cg
-LEFT JOIN (
-    SELECT
-        CASE 
-            WHEN income < 20000 THEN 'Low Salary'
-            WHEN income <= 50000 THEN 'Average Salary'
-            ELSE 'High Salary'
-        END category 
-    FROM Accounts
-) s
-ON cg.category = s.category
-GROUP BY cg.category;
+SELECT "Low Salary" category
+UNION
+SELECT "Average Salary"
+UNION
+SELECT "High Salary"
+) c
+LEFT JOIN Accounts
+ON CASE
+WHEN c.category = "Low Salary" THEN income < 20000
+WHEN c.category = "Average Salary" THEN 20000 <= income AND income <= 50000
+WHEN c.category = "High Salary" THEN 50000 < income
+END
+GROUP BY c.category;
