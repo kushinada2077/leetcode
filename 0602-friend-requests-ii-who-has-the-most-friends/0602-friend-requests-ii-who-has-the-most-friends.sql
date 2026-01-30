@@ -1,35 +1,21 @@
-SELECT r1.id
-    , (
-        SELECT COUNT(DISTINCT friend_id)
-        FROM (
-            (
-        SELECT DISTINCT requester_id friend_id
-        FROM RequestAccepted
-        WHERE accepter_id = r1.id
-            )
+WITH all_ids AS (
+    SELECT DISTINCT requester_id id
+    FROM RequestAccepted
     UNION
-    (
-        SELECT DISTINCT accepter_id
-        FROM RequestAccepted
-        WHERE requester_id = r1.id
-    )
-    ) f
-     ) num
+    SELECT DISTINCT accepter_id
+    FROM RequestAccepted
+)
 
-
-
-
+SELECT id, COUNT(f_id) num
 FROM (
-    (
-        SELECT DISTINCT requester_id id
-        FROM RequestAccepted
-    )
-    UNION
-    (
-        SELECT DISTINCT accepter_id
-        FROM RequestAccepted
-    )
-    ) r1
-GROUP BY r1.id
-ORDER BY num DESC
+(SELECT a1.id id, r1.accepter_id f_id
+FROM all_ids a1
+JOIN RequestAccepted r1 ON a1.id = r1.requester_id)
+UNION ALL
+(SELECT a2.id, r2.requester_id f_id
+FROM all_ids a2
+JOIN RequestAccepted r2 ON a2.id = r2.accepter_id)
+) main
+GROUP BY id
+ORDER BY COUNT(f_id) DESC
 LIMIT 1;
